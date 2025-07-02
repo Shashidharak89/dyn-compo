@@ -355,7 +355,7 @@ const CodeEditorPanel = ({
 
   // Inline styles for the clear button
   const clearButtonStyle = {
-    background: 'linear-gradient(45deg, #ff4757, #ff6b7d)',
+    background: ' #ff4757',
     border: 'none',
     borderRadius: '6px',
     color: 'white',
@@ -363,11 +363,14 @@ const CodeEditorPanel = ({
     fontSize: '12px',
     fontWeight: '600',
     padding: '6px 12px',
-    marginLeft: '8px',
+    marginLeft: '1px',
+    marginTop:'10px',
+    marginRight:'20px',
+
     transition: 'all 0.2s ease',
     boxShadow: '0 2px 4px rgba(255, 71, 87, 0.3)',
-    display: 'flex',
-    alignItems: 'center',
+    // display: 'flex',
+    // alignItems: 'center',
     gap: '4px'
   };
 
@@ -384,7 +387,8 @@ const CodeEditorPanel = ({
         <div className="vscode-toolbar-left">
           <span className="vscode-toolbar-title">Code Editor</span>
         </div>
-        <div className="vscode-toolbar-right">
+        <div className="vscode-toolbar-right clear-button">
+          
           <button 
             style={clearButtonStyle}
             onClick={clearAllCode}
@@ -396,7 +400,7 @@ const CodeEditorPanel = ({
               Object.assign(e.target.style, clearButtonStyle);
             }}
           >
-            🗑️ Clear All
+            🗑️ CLEAR
           </button>
           <button 
             className="vscode-theme-toggle"
@@ -405,6 +409,7 @@ const CodeEditorPanel = ({
           >
             {isDarkMode ? '☀️' : '🌙'}
           </button>
+          
         </div>
       </div>
 
