@@ -1,12 +1,47 @@
-# React + Vite
+<!-- README.md -->
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<div align="center" style="background:#111; padding:30px; border-radius:12px; color:#fff; font-family:sans-serif">
 
-Currently, two official plugins are available:
+  <img src="public/logo.png" alt="Dynamic Component Renderer Logo" width="120" style="margin-bottom:20px;" />
+  
+  <h1 style="color:#ffffff; font-size:2.2rem;">⚛️ Dynamic Component Renderer</h1>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+  <p style="color: #ccc; max-width: 500px;">
+    Write, render, and preview React components with live JSX & CSS. Supports full-screen preview and import libraries.
+  </p>
 
-## Expanding the ESLint configuration
+  <a href="https://dynamic-component-render.vercel.app/" target="_blank" style="color:#79f2ff;font-size:1rem;text-decoration:none;display:inline-block;margin-top:10px;">🌐 Visit Live App →</a>
+</div>
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Features
+
+- 🎨 Live JSX and CSS editor
+- 📦 Supports libraries like: `react`, `axios`, `lodash`, `moment`, `dayjs`, `uuid`, `lucide-react`, `react-router-dom`
+- 🔄 Optional Live Update mode
+- 🖥️ Fullscreen preview with toggle
+- 🌑 Clean dark mode interface
+
+---
+
+## 🔧 How It Works
+
+### 1. ✍️ Write JSX/React code
+
+```jsx
+import React from 'react';
+import { Menu } from 'lucide-react';
+
+function MyComponent() {
+  const [count, setCount] = React.useState(0);
+  return (
+    <div>
+      <Menu color="lime" />
+      <h1>Hello World</h1>
+      <button onClick={() => setCount(c => c + 1)}>Click {count}</button>
+    </div>
+  );
+}
+
+export default MyComponent;
