@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Babel from '@babel/standalone';
 import _ from 'lodash';
 import axios from 'axios';
@@ -9,15 +9,10 @@ import {
   Home, 
   Menu, 
   ArrowRight, 
-  Maximize2, 
-  Minimize2, 
-  Play, 
   Settings,
   Eye,
   EyeOff,
-  Copy,
-  Download,
-  Upload
+  Download
 } from 'lucide-react';
 import {
   BrowserRouter,
@@ -28,9 +23,13 @@ import {
   useParams,
   useLocation,
 } from 'react-router-dom';
-import './DynamicComponentRenderer.css';
 
-const DynamicComponentWithStyle = () => {
+import Header from './Header';
+import CodeEditorPanel from './CodeEditorPanel';
+import PreviewPanel from './PreviewPanel';
+// import './DynamicComponentRenderer.css';
+
+const DynamicComponentRenderer = () => {
   const [jsCode, setJsCode] = useState(`import React, { useState } from 'react';
 import { Menu, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -172,9 +171,7 @@ export default Page;`);
   const [fullscreen, setFullscreen] = useState(false);
   const [liveUpdate, setLiveUpdate] = useState(true);
   const [showPreview, setShowPreview] = useState(true);
-  const [layout, setLayout] = useState('horizontal'); // horizontal, vertical
-  const jsTextareaRef = useRef(null);
-  const cssTextareaRef = useRef(null);
+  const [layout, setLayout] = useState('vertical');
 
   const renderComponent = () => {
     try {
@@ -183,7 +180,6 @@ export default Page;`);
       // Clean the code by removing import statements and replacing them with direct access
       let cleanedCode = jsCode
         .replace(/import\s+React\s*,\s*\{\s*([^}]+)\s*\}\s+from\s+['"]react['"];?/g, (match, hooks) => {
-          // Extract hooks and make them available
           const hooksList = hooks.split(',').map(h => h.trim());
           return `// React hooks: ${hooksList.join(', ')} are available globally`;
         })
@@ -278,7 +274,6 @@ export default Page;`);
 
   const copyToClipboard = (text, type) => {
     navigator.clipboard.writeText(text);
-    // You could add a toast notification here
   };
 
   const downloadCode = () => {
@@ -302,208 +297,41 @@ export default Page;`);
     URL.revokeObjectURL(cssUrl);
   };
 
-  const CodeEditor = ({ value, onChange, language, placeholder }) => {
-    const lines = value.split('\n');
-    
-    return (
-      <div className="code-editor">
-        <div className="code-editor-header">
-          <div className="editor-tabs">
-            <div className={`tab active ${language}`}>
-              <span className="tab-icon">●</span>
-              {language === 'javascript' ? 'component.jsx' : 'styles.css'}
-            </div>
-          </div>
-          <div className="editor-actions">
-            <button 
-              className="editor-btn"
-              onClick={() => copyToClipboard(value, language)}
-              title="Copy to clipboard"
-            >
-              <Copy size={16} />
-            </button>
-          </div>
-        </div>
-        
-        <div className="code-editor-content">
-          <div className="line-numbers">
-            {lines.map((_, index) => (
-              <div key={index + 1} className="line-number">
-                {index + 1}
-              </div>
-            ))}
-          </div>
-          
-          <textarea
-            className={`code-textarea ${language}`}
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder={placeholder}
-            spellCheck="false"
-            ref={language === 'javascript' ? jsTextareaRef : cssTextareaRef}
-          />
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="dynamic-renderer">
-      <div className="renderer-header">
-        <div className="header-left">
-          <h1 className="renderer-title">
-            <span className="title-icon">⚛️</span>
-            Dynamic Component Renderer
-          </h1>
-          <div className="supported-imports">
-            <span className="imports-label">Supported:</span>
-            <code className="imports-list">
-              react, lodash, axios, moment, dayjs, uuid, lucide-react, react-router-dom
-            </code>
-          </div>
-        </div>
-        
-        <div className="header-controls">
-          <div className="control-group">
-            <label className="toggle-label">
-              <input
-                type="checkbox"
-                checked={liveUpdate}
-                onChange={(e) => setLiveUpdate(e.target.checked)}
-                className="toggle-input"
-              />
-              <span className="toggle-slider"></span>
-              Live Update
-            </label>
-          </div>
-          
-          <div className="control-group">
-            <button
-              className={`control-btn ${layout}`}
-              onClick={() => setLayout(layout === 'horizontal' ? 'vertical' : 'horizontal')}
-              title="Toggle layout"
-            >
-              <Settings size={18} />
-            </button>
-          </div>
-          
-          <div className="control-group">
-            <button
-              className="control-btn"
-              onClick={() => setShowPreview(!showPreview)}
-              title="Toggle preview"
-            >
-              {showPreview ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-          
-          <div className="control-group">
-            <button
-              className="control-btn"
-              onClick={downloadCode}
-              title="Download code"
-            >
-              <Download size={18} />
-            </button>
-          </div>
-        </div>
-      </div>
+      <Header
+        liveUpdate={liveUpdate}
+        setLiveUpdate={setLiveUpdate}
+        layout={layout}
+        setLayout={setLayout}
+        showPreview={showPreview}
+        setShowPreview={setShowPreview}
+        downloadCode={downloadCode}
+      />
 
       <div className={`renderer-content ${layout} ${!showPreview ? 'preview-hidden' : ''}`}>
-        <div className="editors-panel">
-          <div className="editor-container">
-            <div className="editor-header">
-              <h3>JSX/React Code</h3>
-            </div>
-            <CodeEditor
-              value={jsCode}
-              onChange={setJsCode}
-              language="javascript"
-              placeholder="Enter your React component code here..."
-            />
-          </div>
-
-          <div className="editor-container">
-            <div className="editor-header">
-              <h3>CSS Styles</h3>
-            </div>
-            <CodeEditor
-              value={cssCode}
-              onChange={setCssCode}
-              language="css"
-              placeholder="Enter your CSS styles here..."
-            />
-          </div>
-        </div>
+        <CodeEditorPanel
+          jsCode={jsCode}
+          setJsCode={setJsCode}
+          cssCode={cssCode}
+          setCssCode={setCssCode}
+          copyToClipboard={copyToClipboard}
+          layout={layout}
+        />
 
         {showPreview && (
-          <div className="preview-panel">
-            <div className="preview-header">
-              <h3>
-                <span className="preview-icon">🖥️</span>
-                Live Preview
-              </h3>
-              <div className="preview-controls">
-                {!liveUpdate && (
-                  <button
-                    className="render-btn"
-                    onClick={renderComponent}
-                    title="Render component"
-                  >
-                    <Play size={16} />
-                    Render
-                  </button>
-                )}
-                <button
-                  className="fullscreen-btn"
-                  onClick={() => setFullscreen(!fullscreen)}
-                  title={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-                >
-                  {fullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-                </button>
-              </div>
-            </div>
-
-            <div className={`preview-content ${fullscreen ? 'fullscreen' : ''}`}>
-              {fullscreen && (
-                <button
-                  className="exit-fullscreen-btn"
-                  onClick={() => setFullscreen(false)}
-                >
-                  <Minimize2 size={16} />
-                  Exit Fullscreen
-                </button>
-              )}
-
-              <div className="component-wrapper">
-                {Component ? (
-                  <BrowserRouter>
-                    <Component />
-                  </BrowserRouter>
-                ) : (
-                  <div className="placeholder">
-                    <p>Your rendered component will appear here</p>
-                  </div>
-                )}
-              </div>
-
-              {error && (
-                <div className="error-panel">
-                  <div className="error-header">
-                    <span className="error-icon">⚠️</span>
-                    Compilation Error
-                  </div>
-                  <div className="error-content">
-                    <code>{error}</code>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          <PreviewPanel
+            Component={Component}
+            error={error}
+            fullscreen={fullscreen}
+            setFullscreen={setFullscreen}
+            liveUpdate={liveUpdate}
+            renderComponent={renderComponent}
+          />
         )}
       </div>
     </div>
   );
 };
 
-export default DynamicComponentWithStyle;
+export default DynamicComponentRenderer;

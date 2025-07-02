@@ -1,0 +1,101 @@
+/* ===== Code Editor Panel Styles ===== */
+.editors-panel {
+  display: flex;
+  flex: 1;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border-color);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.editor-container:last-child {
+  border-bottom: none;
+}
+
+.editor-header {
+  background: var(--bg-secondary);
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.editor-header h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Layout Variations ===== */
+.renderer-content.horizontal .editors-panel {
+  flex-direction: column;
+  width: 50%;
+  border-right: 1px solid var(--border-color);
+}
+
+.renderer-content.vertical .editors-panel {
+  flex-direction: row;
+  height: 50%;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.renderer-content.vertical .editor-container {
+  border-right: 1px solid var(--border-color);
+  border-bottom: none;
+}
+
+.renderer-content.vertical .editor-container:last-child {
+  border-right: none;
+}
+
+.renderer-content.preview-hidden .editors-panel {
+  width: 100%;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1024px) {
+  .renderer-content.horizontal {
+    flex-direction: column;
+  }
+  
+  .renderer-content.horizontal .editors-panel {
+    width: 100%;
+    height: 50%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .renderer-content.horizontal .editors-panel {
+    flex-direction: row;
+  }
+  
+  .renderer-content.horizontal .editor-container {
+    border-right: 1px solid var(--border-color);
+    border-bottom: none;
+  }
+  
+  .renderer-content.horizontal .editor-container:last-child {
+    border-right: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .editors-panel {
+    flex-direction: column !important;
+  }
+  
+  .editor-container {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-color);
+  }
+}
