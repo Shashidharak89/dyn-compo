@@ -1,14 +1,12 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import DynamicComponentRenderer from "./components/DynamicComponentRenderer";
+import DynamicComponentWithStyle from "./components/DynamicComponentWithStyle";
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-   
+   <DynamicComponentWithStyle/>
     </>
   )
 }
